@@ -15,9 +15,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include 
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title="Ecommerce Api",
+        default_version='v1',
+        description="An entirely functional E-commerce API created with the Django Rest Framework.",
+    ),
+    public=True,
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
     path('api/',include('users.urls')),
+    path('swagger', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger'),
 ]
