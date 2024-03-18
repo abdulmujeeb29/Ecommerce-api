@@ -60,3 +60,31 @@ def logout_view(request):
             return Response('logout Successful', status=status.HTTP_200_OK)
         
     return Response('issue')
+
+
+class ChangePasswordView(APIView):
+    permission_classes = [IsAuthenticated]
+
+
+    def post(self, request , *args, **kwargs):
+        old_password = request.data.get('old_password')
+        new_password = request.data.get('new_password')
+        confirm_password = request.data.get('confirm_password')
+        
+        user = request.user  # Retrieve the authenticated user
+        
+        # Ensure the user exists and check the old password
+        if not user.check_password(old_password):
+            return Response({'error': 'Old password is incorrect.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Ensure new password and confirm password match
+        if new_password != confirm_password:
+            return Response({'error': 'New password and confirm password do not match.'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Set the new password
+        user.set_password(new_password)
+        user.save()
+        
+        return Response({'message': 'Password changed successfully.'}, status=status.HTTP_202_ACCEPTED)
+        
+        

@@ -11,7 +11,10 @@ urlpatterns =[
     path('auth/register',views.register,name="register-user"),
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('login',views.LoginView.as_view(),name="login"),
-    path('logout',views.logout_view,name='logout')
+    path('auth/login',views.LoginView.as_view(),name="login"),
+    path('auth/logout',views.logout_view,name='logout'),
+    path('auth/change-password', views.ChangePasswordView.as_view(),name='change-password'),
+
+    
 
 ]
