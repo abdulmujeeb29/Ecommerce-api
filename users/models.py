@@ -10,9 +10,8 @@ User=get_user_model()
 
 
 class Address(models.Model):
-    address_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    address_line1 = models.CharField(max_length=100)
+    street_address = models.CharField(max_length=100)
     city = models.CharField(max_length=50)
     state = models.CharField(max_length=50)
     postal_code = models.CharField(max_length=20)
