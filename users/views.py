@@ -129,36 +129,3 @@ class UserAddressDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 
-# class UserAddress(APIView):
-#     permission_classes = [IsAuthenticated,IsObjectOwner]
-
-#     def get_object(self, request, pk):
-#         try:
-#             return Address.objects.get(id=pk, user=request.user)
-#         except Address.DoesNotExist:
-#             return Response({'error': 'Address not found'}, status=status.HTTP_404_NOT_FOUND)
-
-#     def get(self, request, pk):
-#         address = self.get_object(request, pk)
-#         serializer = AddressSerializer(address)
-#         return Response(serializer.data, status=status.HTTP_200_OK)
-
-#     def post(self, request, pk):
-#         serializer = AddressSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save(user=request.user)
-#             return Response('Address created successfully', status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-#     def put(self, request, pk):
-#         address = self.get_object(request, pk)
-#         serializer = AddressSerializer(address, data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response("Address updated successfully", status=status.HTTP_200_OK)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-#     def delete(self, request, pk):
-#         address = self.get_object(request, pk)
-#         address.delete()
-#         return Response({'message': 'Address deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
