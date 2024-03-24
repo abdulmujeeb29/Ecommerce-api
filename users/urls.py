@@ -15,6 +15,8 @@ urlpatterns =[
     path('auth/logout',views.logout_view,name='logout'),
     path('auth/change-password', views.ChangePasswordView.as_view(),name='change-password'),
     path('users/profile/<int:pk>', views.UserProfile.as_view(),name='get-profile'),
+    path('users/address', views.UserAddressList.as_view(),name='user-address-list'),
+    path('users/address/<int:pk>', views.UserAddressDetail.as_view(),name='user-address-detail'),
 
     
 
