@@ -18,3 +18,5 @@ class Address(models.Model):
 
     def __str__(self):
         return f"Address for {self.user.username}"
+
+

@@ -3,10 +3,10 @@ from rest_framework import status
 from rest_framework.decorators import api_view , permission_classes
 from rest_framework.response import Response
 from .serializers import *
-from rest_framework import generics
+from rest_framework import generics , permissions 
 from django.contrib.auth import login , authenticate ,logout
 from django.contrib import auth 
-from rest_framework.permissions import IsAuthenticated 
+from rest_framework.permissions import IsAuthenticated , AllowAny ,IsAdminUser
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from .permissions import IsObjectOwner
@@ -126,6 +126,9 @@ class UserAddressDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Address.objects.all()
     serializer_class = AddressSerializer
     permission_classes = [IsAuthenticated,IsObjectOwner]
+
+
+
 
 
 

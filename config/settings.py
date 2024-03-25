@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'users',
     'drf_yasg',
+    'product',
 
 ]
 
