@@ -62,7 +62,8 @@ class UpdateProduct(APIView):
         product.delete()
         return Response({'response': 'Product deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
     
-    
+
+
 
 class ProductReviewsList(generics.ListAPIView):
     serializer_class = ReviewSerializer
@@ -72,20 +73,29 @@ class ProductReviewsList(generics.ListAPIView):
         """
         Retrieve reviews for a specific product.
         """
-        product = self.get_object_or_404(Product, pk=self.kwargs['pk'])    #we used get_object_or_404 in place of the try except block 
-        
+        product_id = self.kwargs['pk']
+        try:
+            product = Product.objects.get(id=product_id)
+        except Product.DoesNotExist:
+            return Review.objects.none()  # Return an empty queryset if the product doesn't exist
         return Review.objects.filter(product=product)
 
 class ProductReviewCreate(generics.CreateAPIView):
     serializer_class = ReviewSerializer
     permission_classes = [IsAuthenticated]
+    queryset = Review.objects.none()
 
     def create(self, request, *args, **kwargs):
         """
         Submit a review for a specific product.
         """
-        product = self.get_object_or_404(Product, pk=self.kwargs['pk'])
-        request.data['product'] = product.id  # Use product.id instead of pk for clarity
+        product_pk = self.kwargs['pk']  
+        try:
+            product = Product.objects.get(id=product_pk)  
+        except Product.DoesNotExist:
+            return Response({'error': 'Product not found.'}, status=status.HTTP_404_NOT_FOUND)
+        
+        request.data['product'] = product_pk  
         request.data['user'] = request.user.id
 
         serializer = self.get_serializer(data=request.data)
@@ -93,3 +103,34 @@ class ProductReviewCreate(generics.CreateAPIView):
         serializer.save()
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+
+# class ProductReviewsList(generics.ListAPIView):
+#     serializer_class = ReviewSerializer
+#     permission_classes = [IsAuthenticated]
+
+#     def get_queryset(self):
+#         """
+#         Retrieve reviews for a specific product.
+#         """
+#         product = self.get_object_or_404(Product, pk=self.kwargs['pk'])    #we used get_object_or_404 in place of the try except block 
+        
+#         return Review.objects.filter(product=product)
+
+# class ProductReviewCreate(generics.CreateAPIView):
+#     serializer_class = ReviewSerializer
+#     permission_classes = [IsAuthenticated]
+
+#     def create(self, request, *args, **kwargs):
+#         """
+#         Submit a review for a specific product.
+#         """
+#         product = self.get_object_or_404(Product, pk=self.kwargs['pk'])
+#         request.data['product'] = product.id  # Use product.id instead of pk for clarity
+#         request.data['user'] = request.user.id
+
+#         serializer = self.get_serializer(data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
+
+#         return Response(serializer.data, status=status.HTTP_201_CREATED)
